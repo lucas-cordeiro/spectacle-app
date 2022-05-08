@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -52,6 +53,13 @@ android {
 }
 
 dependencies {
+    implementation(platform(CoreLibs.firebaseBom))
+    implementation(CoreLibs.firebaseAnalytics)
+    implementation(CoreLibs.firebaseAuth)
+    implementation(CoreLibs.firebaseKTX)
+    implementation(CoreLibs.servicesKTX)
+
+    implementation(CoreLibs.logcat)
 
     implementation(project(Modules.ds))
 }

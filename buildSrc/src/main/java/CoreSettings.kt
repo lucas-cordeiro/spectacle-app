@@ -19,7 +19,9 @@ object CoreVersions {
     const val logcat = "0.1"
     const val startup = "1.1.0"
     const val airbnbDeepLink = "5.4.3"
-    const val newrelic = "6.5.0"
+    const val firebaseBom = "30.0.0"
+    const val firebaseKTX = "20.1.0"
+    const val servicesKTX = "1.4.3"
 }
 
 object CoreLibs {
@@ -49,5 +51,9 @@ object CoreLibs {
     const val startup = "androidx.startup:startup-runtime:${CoreVersions.startup}"
     const val airbnbDeeplink = "com.airbnb:deeplinkdispatch:${CoreVersions.airbnbDeepLink}"
     const val airbnbAnnotationProcessor = "com.airbnb:deeplinkdispatch-processor:${CoreVersions.airbnbDeepLink}"
-    const val newrelic = "com.newrelic.agent.android:android-agent:${CoreVersions.newrelic}"
+    const val firebaseBom = "com.google.firebase:firebase-bom:${CoreVersions.firebaseBom}"
+    const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx"
+    const val firebaseAuth = "com.google.firebase:firebase-auth-ktx"
+    const val firebaseKTX = "com.google.firebase:firebase-common-ktx:${CoreVersions.firebaseKTX}"
+    const val servicesKTX = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${CoreVersions.servicesKTX}"
 }
