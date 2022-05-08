@@ -7,6 +7,7 @@ object PresentationVersions {
     const val accompanist = "0.24.0-alpha"
     const val coil = "2.0.0-rc02"
     const val lottie = "4.0.0"
+    const val splash = "1.0.0-beta02"
 }
 
 object PresentationLibs {
@@ -20,6 +21,8 @@ object PresentationLibs {
     const val composeActivity = "androidx.activity:activity-compose:${PresentationVersions.composeActivity}"
     const val composeViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${PresentationVersions.composeViewModel}"
     const val composeNavigation = "androidx.navigation:navigation-compose:${PresentationVersions.composeNavigation}"
+
+    const val splash = "androidx.core:core-splashscreen:${PresentationVersions.splash}"
 
     const val accompanistInsets = "com.google.accompanist:accompanist-insets:${PresentationVersions.accompanist}"
     const val accompanistSwipeRefresh = "com.google.accompanist:accompanist-swiperefresh:${PresentationVersions.accompanist}"

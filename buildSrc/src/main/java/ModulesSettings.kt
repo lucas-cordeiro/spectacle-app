@@ -17,3 +17,9 @@ object Modules {
 
     const val packagingOptions = "/META-INF/{AL2.0,LGPL2.1}"
 }
+
+object Features {
+    private const val FEATURE_PREFIX = "$APP_PREFIX:feature"
+
+    const val home = "$FEATURE_PREFIX:movies"
+}

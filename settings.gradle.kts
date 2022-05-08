@@ -6,3 +6,4 @@ include(
     ":app:core:data",
     ":app:core:ds"
 )
+include(":app:feature:movies")

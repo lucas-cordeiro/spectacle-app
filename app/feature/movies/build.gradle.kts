@@ -1,7 +1,6 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -12,20 +11,12 @@ android {
         targetSdk = AndroidSDK.targetSDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        applicationId = "br.com.spectacle.app"
-        versionCode = SpectableSettings.versionCode
-        versionName = SpectableSettings.versionName
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        getByName("release") {
-        isMinifyEnabled = false
+        release {
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -53,19 +44,5 @@ android {
 }
 
 dependencies {
-    implementation(platform(CoreLibs.firebaseBom))
-    implementation(CoreLibs.firebaseAnalytics)
-    implementation(CoreLibs.firebaseAuth)
-    implementation(CoreLibs.firebaseKTX)
-    implementation(CoreLibs.servicesKTX)
-
-    implementation(CoreLibs.koinAndroid)
-    implementation(CoreLibs.koinCompose)
-
     implementation(project(Modules.ds))
-    implementation(project(Features.home))
-
-    implementation(PresentationLibs.splash)
-    implementation(CoreLibs.logcat)
-    implementation(CoreLibs.startup)
 }

@@ -1,4 +1,4 @@
-package br.com.spectacle.app.ui.theme
+package br.com.spectacle.app.core.ds.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
