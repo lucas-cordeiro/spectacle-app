@@ -1,6 +1,6 @@
 package br.com.spectacle.app.feature.login.di
 
-import br.com.spectacle.app.feature.login.data.network.LoginRemoteDataSource
+import br.com.spectacle.app.feature.login.data.remote.LoginRemoteDataSource
 import br.com.spectacle.app.feature.login.data.repository.LoginRepositoryImpl
 import br.com.spectacle.app.feature.login.domain.repository.LoginRepository
 import br.com.spectacle.app.feature.login.domain.usecase.RegisterWithEmailAndPasswordUseCase

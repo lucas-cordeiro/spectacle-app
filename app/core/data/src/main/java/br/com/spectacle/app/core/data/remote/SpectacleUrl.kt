@@ -1,4 +1,4 @@
-package br.com.spectacle.app.core.data.network
+package br.com.spectacle.app.core.data.remote
 
 import io.ktor.http.*
 

@@ -1,6 +1,6 @@
 package br.com.spectacle.app.feature.login.data.repository
 
-import br.com.spectacle.app.feature.login.data.network.LoginRemoteDataSource
+import br.com.spectacle.app.feature.login.data.remote.LoginRemoteDataSource
 import br.com.spectacle.app.feature.login.domain.repository.LoginRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await

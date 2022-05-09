@@ -45,5 +45,9 @@ android {
 
 dependencies {
     implementation(project(Modules.ds))
+    implementation(project(Modules.data))
     implementation(project(Modules.domain))
+
+    implementation(CoreLibs.koinAndroid)
+    implementation(CoreLibs.koinCompose)
 }

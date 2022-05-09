@@ -6,6 +6,7 @@ import br.com.spectacle.app.BuildConfig
 import br.com.spectacle.app.core.data.di.networkModule
 import br.com.spectacle.app.di.applicationModule
 import br.com.spectacle.app.feature.login.di.loginModule
+import br.com.spectacle.app.feature.movies.di.moviesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.KoinApplication
@@ -19,6 +20,7 @@ class KoinInitializer: Initializer<KoinApplication> {
             networkModule,
             applicationModule,
             loginModule,
+            moviesModule
         )
 
         return startKoin {

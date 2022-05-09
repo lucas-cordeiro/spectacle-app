@@ -1,7 +1,7 @@
-package br.com.spectacle.app.feature.login.data.network
+package br.com.spectacle.app.feature.login.data.remote
 
-import br.com.spectacle.app.core.data.network.SpectacleHttpClient
-import br.com.spectacle.app.feature.login.data.network.model.UserVerifyResponse
+import br.com.spectacle.app.core.data.remote.SpectacleHttpClient
+import br.com.spectacle.app.feature.login.data.remote.model.UserVerifyResponse
 import io.ktor.client.request.post
 
 class LoginRemoteDataSource(
