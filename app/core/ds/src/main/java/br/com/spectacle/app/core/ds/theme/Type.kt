@@ -176,6 +176,6 @@ caption = TextStyle(
 @Composable
 fun Typography.textField() = TextStyle(
     color = MaterialTheme.colors.onSurface,
-    fontSize = 14.sp,
+    fontSize = 18.sp,
     fontWeight = FontWeight.Medium
 )

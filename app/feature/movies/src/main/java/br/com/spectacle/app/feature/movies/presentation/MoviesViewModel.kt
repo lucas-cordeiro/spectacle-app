@@ -3,6 +3,7 @@ package br.com.spectacle.app.feature.movies.presentation
 import androidx.lifecycle.viewModelScope
 import br.com.spectacle.app.core.ds.arch.ViewModel
 import br.com.spectacle.app.core.ds.component.bottomsheet.BottomSheetOption
+import br.com.spectacle.app.core.ds.component.bottomsheet.BottomSheetState
 import br.com.spectacle.app.feature.movies.domain.model.Genre
 import br.com.spectacle.app.feature.movies.domain.model.Movie
 import br.com.spectacle.app.feature.movies.domain.usecase.AddFavoriteMovieUseCase
@@ -103,9 +104,12 @@ internal class MoviesViewModel(
     fun clickedMovie(movie: Movie) {
         viewModelScope.launch {
             setState { state ->
-                val bottomSheetState = BottomSheetState.MovieAction(
-                    options = getMovieActionByState(state),
-                    movie = movie
+                val bottomSheetState = BottomSheetState.ItemAction(
+                    options = getMovieActionByState(
+                        state = state,
+                        movie = movie
+                    ),
+                    itemId = movie.id
                 )
                 state.copy(bottomSheetState = bottomSheetState)
             }
@@ -114,8 +118,8 @@ internal class MoviesViewModel(
         }
     }
 
-    fun clickedConfirmMovieAction(movie: Movie) {
-        handleMovieAction(movie)
+    fun clickedConfirmMovieAction(movieId: Long) {
+        handleMovieAction(movieId)
     }
 
     fun clickedCancelAction() {
@@ -126,7 +130,7 @@ internal class MoviesViewModel(
         }
     }
 
-    private fun handleMovieAction(movie: Movie) {
+    private fun handleMovieAction(movieId: Long) {
         viewModelScope.launch {
             try {
                 val isFavoritesTab = state.value.isFavoritesTab
@@ -136,7 +140,6 @@ internal class MoviesViewModel(
                     )
                 )
 
-                val movieId = movie.id
                 withContext(IO){
                     delay(REQUEST_DELAY)
 
@@ -177,11 +180,14 @@ internal class MoviesViewModel(
         setState { state -> state.copy(bottomSheetState = value) }
     }
 
-    private fun getMovieActionByState(state: MoviesUiState): List<BottomSheetOption> {
+    private fun getMovieActionByState(
+        state: MoviesUiState,
+        movie: Movie
+    ): List<BottomSheetOption> {
         val message = if (state.isFavoritesTab) {
-            "Remover dos Favoritos"
+            "Remover \"${movie.title}\" dos Favoritos"
         } else {
-            "Adicionar ao Favoritos"
+            "Adicionar \"${movie.title}\" ao Favoritos"
         }
         return listOf(BottomSheetOption(message))
     }

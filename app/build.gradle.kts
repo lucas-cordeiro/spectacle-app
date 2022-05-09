@@ -66,8 +66,9 @@ dependencies {
     implementation(project(Modules.domain))
     implementation(project(Modules.data))
 
-    implementation(project(Features.movies))
     implementation(project(Features.login))
+    implementation(project(Features.movies))
+    implementation(project(Features.musics))
 
     implementation(PresentationLibs.splash)
     implementation(CoreLibs.logcat)

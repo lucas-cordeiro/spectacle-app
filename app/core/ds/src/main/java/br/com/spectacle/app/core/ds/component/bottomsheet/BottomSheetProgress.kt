@@ -42,8 +42,8 @@ fun BottomSheetProgress(
     ) {
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
 
-        val (iterations, clipSpec) = remember(state){
-            when(state) {
+        val (iterations, clipSpec) = remember(state) {
+            when (state) {
                 BottomSheetProgressState.LOADING -> {
                     Pair(LottieConstants.IterateForever, LottieClipSpec.Progress(0f, 0.28f))
                 }
@@ -67,7 +67,7 @@ fun BottomSheetProgress(
             modifier = Modifier.size(100.dp)
         )
 
-        if(!message.isNullOrBlank()){
+        if (!message.isNullOrBlank()) {
             Text(
                 text = message,
                 style = MaterialTheme.typography.body1.copy(
@@ -81,7 +81,7 @@ fun BottomSheetProgress(
                     .padding(horizontal = 16.dp)
             )
         }
-        if (errorCode != null){
+        if (errorCode != null) {
             Text(
                 text = "Código: #${errorCode.toString().padStart(4, '0')}",
                 style = MaterialTheme.typography.body2.copy(
@@ -101,16 +101,14 @@ fun BottomSheetProgress(
             enter = expandVertically(),
             exit = shrinkVertically()
         ) {
-            Column {
-                RoundedButton(
-                    text = { BasicTextButton(text = "Entendi!") },
-                    onClick = onClick,
-                    shapeCorner = 8.dp,
-                    modifier = Modifier
-                        .padding(top = 24.dp)
-                        .fillMaxWidth()
-                )
-            }
+            RoundedButton(
+                text = { BasicTextButton(text = "Entendi!") },
+                onClick = onClick,
+                shapeCorner = 8.dp,
+                modifier = Modifier
+                    .padding(top = 24.dp)
+                    .fillMaxWidth()
+            )
         }
     }
 }

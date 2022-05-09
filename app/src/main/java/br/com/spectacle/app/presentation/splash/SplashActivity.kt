@@ -10,6 +10,7 @@ import br.com.spectacle.app.core.ds.arch.collectActions
 import br.com.spectacle.app.core.ds.theme.SpectacleTheme
 import br.com.spectacle.app.feature.login.presentation.LoginActivity
 import br.com.spectacle.app.feature.movies.presentation.MoviesActivity
+import br.com.spectacle.app.feature.musics.presentation.MusicsActivity
 import com.google.accompanist.insets.ProvideWindowInsets
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,7 +43,7 @@ class SplashActivity : ComponentActivity() {
         when (action) {
             is SplashUiAction.NavigateToLogin -> navigateToLogin()
             is SplashUiAction.NavigateToMovies -> navigateToMovies()
-            is SplashUiAction.NavigateToMusics -> Toast.makeText(this, "Musics", Toast.LENGTH_SHORT).show()
+            is SplashUiAction.NavigateToMusics -> navigateToMusics()
         }
     }
 
@@ -52,5 +53,9 @@ class SplashActivity : ComponentActivity() {
 
     private fun navigateToMovies(){
         startActivity(MoviesActivity.getIntent(this))
+    }
+
+    private fun navigateToMusics(){
+        startActivity(MusicsActivity.getIntent(this))
     }
 }

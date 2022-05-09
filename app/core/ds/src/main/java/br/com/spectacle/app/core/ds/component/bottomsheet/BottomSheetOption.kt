@@ -114,8 +114,6 @@ private fun OptionsLabel(
     Box(modifier = modifier) {
         Text(
             text = label,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.h5.copy(
                 color = MaterialTheme.colors.onSurface,
                 textAlign = TextAlign.Center,

@@ -8,3 +8,4 @@ include(
 )
 include(":app:feature:movies")
 include(":app:feature:login")
+include(":app:feature:musics")

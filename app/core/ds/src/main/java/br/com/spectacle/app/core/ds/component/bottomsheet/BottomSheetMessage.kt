@@ -18,14 +18,13 @@ import br.com.spectacle.app.core.ds.component.button.RoundedButton
 fun BottomSheetMessage(
     message: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    errorCode: Int? = null
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .background(color = MaterialTheme.colors.surface)
-            .padding(horizontal = 16.dp).clickable(onClick = {}, interactionSource = MutableInteractionSource(), indication = null)
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
         Text(
             text = message,
@@ -39,28 +38,13 @@ fun BottomSheetMessage(
                 .padding(top = 24.dp)
                 .padding(horizontal = 16.dp)
         )
-        if (errorCode != null)
-            Text(
-                text = "Código: #${errorCode.toString().padStart(4, '0')}",
-                style = MaterialTheme.typography.body2.copy(
-                    color = MaterialTheme.colors.onSurface.copy(
-                        alpha = 0.7f
-                    )
-                ),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(top = 4.dp)
-                    .padding(horizontal = 16.dp)
-            )
-
-        Spacer(modifier = Modifier.height(70.dp))
 
         RoundedButton(
             text = { BasicTextButton(text = "Entendi!") },
             onClick = onClick,
             shapeCorner = 8.dp,
             modifier = Modifier
-                .padding(24.dp)
+                .padding(top = 24.dp)
                 .fillMaxWidth()
         )
     }
