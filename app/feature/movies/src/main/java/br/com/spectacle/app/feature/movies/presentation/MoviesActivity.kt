@@ -1,15 +1,23 @@
-package br.com.spectacle.app.feature.movies
+package br.com.spectacle.app.feature.movies.presentation
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import br.com.spectacle.app.core.ds.theme.SpectacleTheme
+import com.google.accompanist.insets.ProvideWindowInsets
 
 class MoviesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {  }
+        setContent {
+            SpectacleTheme {
+                ProvideWindowInsets {
+                    MoviesScreen()
+                }
+            }
+        }
     }
 
     companion object {

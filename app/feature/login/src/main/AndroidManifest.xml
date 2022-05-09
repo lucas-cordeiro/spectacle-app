@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.spectacle.app.feature.login">
+    <application>
+        <activity
+            android:name=".presentation.LoginActivity"
+            android:theme="@style/Theme.Spectacle"
+            android:windowSoftInputMode="adjustResize"/>
+    </application>
+</manifest>

@@ -7,3 +7,4 @@ include(
     ":app:core:ds"
 )
 include(":app:feature:movies")
+include(":app:feature:login")

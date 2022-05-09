@@ -28,8 +28,7 @@ import br.com.spectacle.app.presentation.splash.BackgroundState
 import java.util.Collections.copy
 
 private const val DURATION = 2000
-private const val COLLAPSED_RADIUS = 20f
-private const val EXPANDED_RADIUS = 2000
+private const val COLLAPSED_RADIUS = 1f
 
 @Composable
 fun AnimateSplashBackground(
@@ -44,7 +43,7 @@ fun AnimateSplashBackground(
             targetValue = when (state) {
                 BackgroundState.COLLAPSED -> COLLAPSED_RADIUS.dp.value
                 BackgroundState.EXPANDED -> maxWidth.value
-                else -> EXPANDED_RADIUS.dp.value
+                else -> maxHeight.times(4).value
             },
             animationSpec = tween(
                 durationMillis = DURATION,

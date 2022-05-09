@@ -21,5 +21,6 @@ object Modules {
 object Features {
     private const val FEATURE_PREFIX = "$APP_PREFIX:feature"
 
-    const val home = "$FEATURE_PREFIX:movies"
+    const val movies = "$FEATURE_PREFIX:movies"
+    const val login = "$FEATURE_PREFIX:login"
 }

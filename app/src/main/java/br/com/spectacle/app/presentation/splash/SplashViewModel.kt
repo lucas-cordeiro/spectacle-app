@@ -2,14 +2,35 @@ package br.com.spectacle.app.presentation.splash
 
 import androidx.lifecycle.viewModelScope
 import br.com.spectacle.app.core.ds.arch.ViewModel
-import kotlinx.coroutines.delay
+import br.com.spectacle.app.domain.usecase.VerifyHasUserLoggedUseCase
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class SplashViewModel : ViewModel<SplashUiState, SplashUiAction>(SplashUiState()) {
+class SplashViewModel(
+    private val verifyHasUserLoggedUseCase: VerifyHasUserLoggedUseCase
+) : ViewModel<SplashUiState, SplashUiAction>(SplashUiState()) {
     fun splashScreenOnResume() {
+        verifyHasUserLogged()
+    }
+
+    private fun verifyHasUserLogged(){
         viewModelScope.launch {
-            delay(500)
+            val hasUserLogged = try{
+                withContext(IO){ verifyHasUserLoggedUseCase() }
+            }catch (t: Throwable){
+                t.printStackTrace()
+                false
+            }
+            handleHasUserLogged(hasUserLogged)
+        }
+    }
+
+    private fun handleHasUserLogged(hasUserLogged: Boolean){
+        if(hasUserLogged){
             setBackgroundState(BackgroundState.EXPANDED)
+        }else{
+            sendAction { SplashUiAction.NavigateToLogin }
         }
     }
 
@@ -29,12 +50,10 @@ class SplashViewModel : ViewModel<SplashUiState, SplashUiAction>(SplashUiState()
 
     private fun navigateToMovies(){
         sendAction { SplashUiAction.NavigateToMovies }
-        setBackgroundState(BackgroundState.COLLAPSED)
     }
 
     private fun navigateToMusics(){
         sendAction { SplashUiAction.NavigateToMusics }
-        setBackgroundState(BackgroundState.COLLAPSED)
     }
 
     fun clickedMoviesButton() {

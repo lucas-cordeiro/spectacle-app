@@ -45,4 +45,5 @@ android {
 
 dependencies {
     implementation(project(Modules.ds))
+    implementation(project(Modules.domain))
 }

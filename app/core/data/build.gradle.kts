@@ -45,4 +45,22 @@ android {
 
 dependencies {
     implementation(project(Modules.ds))
+
+    //Firebase
+    implementation(platform(CoreLibs.firebaseBom))
+    implementation(CoreLibs.firebaseAuth)
+    implementation(CoreLibs.firebaseKTX)
+    implementation(CoreLibs.servicesKTX)
+
+    //Coroutine
+    implementation(CoreLibs.coroutines)
+
+    //Data Libs
+    api(DataLibs.ktor)
+    implementation(DataLibs.ktorGson)
+    implementation(DataLibs.ktorLog)
+    implementation(DataLibs.ktorAuth)
+
+    implementation(CoreLibs.koinAndroid)
+    implementation(CoreLibs.logcat)
 }

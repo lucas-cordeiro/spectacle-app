@@ -3,7 +3,7 @@
     package="br.com.spectacle.app.feature.movies">
     <application>
         <activity
-            android:name=".MoviesActivity"
+            android:name=".presentation.MoviesActivity"
             android:theme="@style/Theme.Spectacle"/>
     </application>
 </manifest>

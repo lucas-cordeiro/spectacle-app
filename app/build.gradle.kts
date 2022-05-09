@@ -63,7 +63,11 @@ dependencies {
     implementation(CoreLibs.koinCompose)
 
     implementation(project(Modules.ds))
-    implementation(project(Features.home))
+    implementation(project(Modules.domain))
+    implementation(project(Modules.data))
+
+    implementation(project(Features.movies))
+    implementation(project(Features.login))
 
     implementation(PresentationLibs.splash)
     implementation(CoreLibs.logcat)

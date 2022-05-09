@@ -1,6 +1,8 @@
 package br.com.spectacle.app.core.ds.theme
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -169,4 +171,11 @@ caption = TextStyle(
     fontSize = 12.sp
 )
 */
+)
+
+@Composable
+fun Typography.textField() = TextStyle(
+    color = MaterialTheme.colors.onSurface,
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Medium
 )
