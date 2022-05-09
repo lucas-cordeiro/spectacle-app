@@ -1,5 +1,6 @@
 package br.com.spectacle.app.feature.movies.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -49,8 +50,10 @@ internal fun MoviesActivity.MoviesScreen(
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp),
         sheetContent = {
             MoviesBottomSheetContent(
-                isFavoritesTab = state.isFavoritesTab,
-                clickedConfirm = { viewModel.clickedConfirmAction() },
+                bottomSheetState = state.bottomSheetState,
+                clickedConfirmMovieAction = { movie ->
+                    viewModel.clickedConfirmMovieAction(movie)
+                },
                 clickedCancel = { viewModel.clickedCancelAction() },
             )
         },
@@ -79,11 +82,10 @@ internal fun MoviesActivity.MoviesScreen(
                     modifier = Modifier.padding(top = 16.dp)
                 )
 
-                if (state.loading)
-                    MoviesLoading()
+                MoviesLoading(state.loading)
 
                 MoviesList(
-                    loading = state.loading,
+                    visible = !state.loading,
                     moviesWithGenre = state.movies,
                     clickedMovie = { movie -> viewModel.clickedMovie(movie) },
                     modifier = Modifier.padding(top = 32.dp)

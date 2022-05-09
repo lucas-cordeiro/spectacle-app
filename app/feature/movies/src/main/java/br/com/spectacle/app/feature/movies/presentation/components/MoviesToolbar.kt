@@ -19,7 +19,7 @@ internal fun MoviesToolbar(
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
             text = "Filmes",
-            style = MaterialTheme.typography.h2.copy(
+            style = MaterialTheme.typography.h3.copy(
                 fontWeight = FontWeight.Medium
             ),
             color = MaterialTheme.colors.onBackground,

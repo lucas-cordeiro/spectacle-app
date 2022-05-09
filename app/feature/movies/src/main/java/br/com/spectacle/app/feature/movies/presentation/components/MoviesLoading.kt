@@ -1,5 +1,8 @@
 package br.com.spectacle.app.feature.movies.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,16 +17,24 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
 internal fun MoviesLoading(
+    visible: Boolean,
     modifier: Modifier = Modifier
 ){
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.movie_loading))
-    val progress by animateLottieCompositionAsState(
-        composition,
-        iterations = LottieConstants.IterateForever
-    )
-    LottieAnimation(
-        composition = composition,
-        progress = progress,
-        modifier = modifier.size(200.dp)
-    )
+    AnimatedVisibility(
+        visible = visible,
+        enter = expandVertically(),
+        exit = shrinkVertically(),
+        modifier = modifier
+    ) {
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.movie_loading))
+        val progress by animateLottieCompositionAsState(
+            composition,
+            iterations = LottieConstants.IterateForever
+        )
+        LottieAnimation(
+            composition = composition,
+            progress = progress,
+            modifier = Modifier.size(200.dp)
+        )
+    }
 }

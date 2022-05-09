@@ -1,5 +1,11 @@
 package br.com.spectacle.app.feature.movies.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,46 +46,55 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
 internal fun MoviesList(
-    loading: Boolean,
+    visible: Boolean,
     moviesWithGenre: List<MovieWithGenre>,
     clickedMovie: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxWidth()
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn(),
+        exit = fadeOut(),
+        modifier = modifier
     ) {
-        if (moviesWithGenre.isNotEmpty()) {
-            moviesWithGenre.forEach { item ->
-                item {
-                    Text(
-                        text = item.genre.name,
-                        style = MaterialTheme.typography.h3,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
-
-                item {
-                    LazyRow(
-                        modifier = Modifier.padding(
-                            top = 16.dp,
-                            bottom = 48.dp
-                        )
-                    ) {
-                        itemsIndexed(item.movies) { index, movie ->
-                            MovieCard(
-                                movie = movie,
-                                onClick = { clickedMovie(movie) },
-                                modifier = Modifier.padding(
-                                    end = if (item.movies.lastIndex == index) 0.dp else 16.dp
-                                )
+        Crossfade(targetState = moviesWithGenre) { list ->
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                if (list.isNotEmpty()) {
+                    list.forEach { item ->
+                        item {
+                            Text(
+                                text = item.genre.name,
+                                style = MaterialTheme.typography.h3,
+                                color = MaterialTheme.colors.onBackground
                             )
                         }
+
+                        item {
+                            LazyRow(
+                                modifier = Modifier.padding(
+                                    top = 16.dp,
+                                    bottom = 48.dp
+                                )
+                            ) {
+                                itemsIndexed(item.movies) { index, movie ->
+                                    MovieCard(
+                                        movie = movie,
+                                        onClick = { clickedMovie(movie) },
+                                        modifier = Modifier.padding(
+                                            end = if (item.movies.lastIndex == index) 0.dp else 16.dp
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    item {
+                        EmptyData()
                     }
                 }
-            }
-        } else if (!loading) {
-            item {
-                EmptyData()
             }
         }
     }

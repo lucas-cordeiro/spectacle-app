@@ -2,6 +2,7 @@ package br.com.spectacle.app.feature.movies.presentation
 
 import androidx.lifecycle.viewModelScope
 import br.com.spectacle.app.core.ds.arch.ViewModel
+import br.com.spectacle.app.core.ds.component.bottomsheet.BottomSheetOption
 import br.com.spectacle.app.feature.movies.domain.model.Genre
 import br.com.spectacle.app.feature.movies.domain.model.Movie
 import br.com.spectacle.app.feature.movies.domain.usecase.AddFavoriteMovieUseCase
@@ -11,7 +12,13 @@ import br.com.spectacle.app.feature.movies.domain.usecase.GetPopularsMoviesUseCa
 import br.com.spectacle.app.feature.movies.domain.usecase.RemoveFavoriteMovieUseCase
 import br.com.spectacle.app.feature.movies.presentation.components.MoviesSwitchOption
 import br.com.spectacle.app.feature.movies.presentation.model.MovieWithGenre
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+private const val BOTTOM_SHEET_DELAY = 200L
+private const val REQUEST_DELAY = 2 * 1000L
 
 internal class MoviesViewModel(
     private val getFavoritesMoviesUseCase: GetFavoritesMoviesUseCase,
@@ -28,7 +35,9 @@ internal class MoviesViewModel(
         viewModelScope.launch {
             try {
                 setLoading(true)
-                val genres = getGenresMoviesUseCase()
+                val genres = withContext(IO){
+                    getGenresMoviesUseCase()
+                }
                 handleGenres(genres)
             } catch (t: Throwable) {
                 handleError(t)
@@ -38,37 +47,22 @@ internal class MoviesViewModel(
 
     private fun handleGenres(genres: List<Genre>) {
         setState { state -> state.copy(genres = genres) }
-        handleTab(state.value.isFavoritesTab)
+        getMovies(state.value.isFavoritesTab)
     }
 
-    private fun handleTab(favorites: Boolean) {
-        if (favorites) {
-            getFavorites()
-        } else {
-            getPopulars()
-        }
-    }
 
-    private fun getFavorites() {
+    private fun getMovies(isFavoritesTab: Boolean) {
         viewModelScope.launch {
             try {
                 setLoading(true)
-                val favorites = getFavoritesMoviesUseCase()
-                handleMovies(favorites)
-            } catch (t: Throwable) {
-                handleError(t)
-            } finally {
-                setLoading(false)
-            }
-        }
-    }
-
-    private fun getPopulars() {
-        viewModelScope.launch {
-            try {
-                setLoading(true)
-                val populars = getPopularsMoviesUseCase()
-                handleMovies(populars)
+                val movies = withContext(IO) {
+                    delay(REQUEST_DELAY)
+                    if(isFavoritesTab)
+                        getFavoritesMoviesUseCase()
+                    else
+                        getPopularsMoviesUseCase()
+                }
+                handleMovies(movies)
             } catch (t: Throwable) {
                 handleError(t)
             } finally {
@@ -103,43 +97,71 @@ internal class MoviesViewModel(
         setState { state ->
             state.copy(isFavoritesTab = isFavoritesTab)
         }
-        handleTab(favorites = isFavoritesTab)
+        getMovies(isFavoritesTab)
     }
 
     fun clickedMovie(movie: Movie) {
-        setState { state ->
-            state.copy(selectedMovie = movie)
+        viewModelScope.launch {
+            setState { state ->
+                val bottomSheetState = BottomSheetState.MovieAction(
+                    options = getMovieActionByState(state),
+                    movie = movie
+                )
+                state.copy(bottomSheetState = bottomSheetState)
+            }
+            delay(BOTTOM_SHEET_DELAY)
+            sendAction { MoviesUiAction.ExpandBottomSheet }
         }
-        sendAction { MoviesUiAction.ExpandBottomSheet }
     }
 
-    fun clickedConfirmAction() {
-        clickedCancelAction()
-        handleUserActionWithMovie()
+    fun clickedConfirmMovieAction(movie: Movie) {
+        handleMovieAction(movie)
     }
 
     fun clickedCancelAction() {
-        sendAction { MoviesUiAction.CollapseBottomSheet }
+        viewModelScope.launch {
+            sendAction { MoviesUiAction.CollapseBottomSheet }
+            delay(BOTTOM_SHEET_DELAY)
+            setBottomSheetState(null)
+        }
     }
 
-    private fun handleUserActionWithMovie() {
+    private fun handleMovieAction(movie: Movie) {
         viewModelScope.launch {
             try {
-                setLoading(true)
-                val movieId = state.value.selectedMovie?.id ?: 0L
                 val isFavoritesTab = state.value.isFavoritesTab
-                if (isFavoritesTab) {
-                    removeFavoriteMovieUseCase(movieId)
-                } else {
-                    addFavoriteMovieUseCase(movieId)
-                }
-                updateTab(isFavoritesTab = true)
+                setBottomSheetState(
+                    BottomSheetState.Progress.Loading(
+                        getMovieActionMessageLoading(isFavoritesTab)
+                    )
+                )
 
+                val movieId = movie.id
+                withContext(IO){
+                    delay(REQUEST_DELAY)
+
+                    if (isFavoritesTab) {
+                        removeFavoriteMovieUseCase(movieId)
+                    } else {
+                        addFavoriteMovieUseCase(movieId)
+                    }
+                }
+
+                handleResultMovieAction(isFavoritesTab)
             } catch (t: Throwable) {
                 handleError(t)
-            } finally {
-                setLoading(false)
             }
+        }
+    }
+
+    private fun handleResultMovieAction(isFavoritesTab: Boolean){
+        setBottomSheetState(
+            BottomSheetState.Progress.Success(
+                getMovieActionMessageSuccess(isFavoritesTab)
+            )
+        )
+        if (isFavoritesTab){
+            getMovies(isFavoritesTab)
         }
     }
 
@@ -149,5 +171,34 @@ internal class MoviesViewModel(
 
     private fun setLoading(value: Boolean) {
         setState { state -> state.copy(loading = value) }
+    }
+
+    private fun setBottomSheetState(value: BottomSheetState?) {
+        setState { state -> state.copy(bottomSheetState = value) }
+    }
+
+    private fun getMovieActionByState(state: MoviesUiState): List<BottomSheetOption> {
+        val message = if (state.isFavoritesTab) {
+            "Remover dos Favoritos"
+        } else {
+            "Adicionar ao Favoritos"
+        }
+        return listOf(BottomSheetOption(message))
+    }
+
+    private fun getMovieActionMessageLoading(isFavoritesTab: Boolean): String {
+        return if(isFavoritesTab) {
+            "Removendo filme dos favoritos..."
+        } else {
+            "Adicionando filme aos favoritos..."
+        }
+    }
+
+    private fun getMovieActionMessageSuccess(isFavoritesTab: Boolean): String {
+        return if(isFavoritesTab) {
+            "Filme removido com sucesso!"
+        } else {
+            "Filme adicionado com sucesso!"
+        }
     }
 }
